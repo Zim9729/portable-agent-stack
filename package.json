@@ -1,0 +1,52 @@
+{
+  "name": "portable-agent-stack",
+  "version": "1.0.0",
+  "description": "A portable, repo-local engineering stack for AI coding agents: workflow memory, code intelligence, reusable skills, and context compression.",
+  "type": "module",
+  "bin": {
+    "pas": "bin/pas.mjs"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "profiles/",
+    "skills/",
+    "assets/",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE",
+    "THIRD_PARTY.md",
+    "docs/",
+    "CHANGELOG.md",
+    "install.sh",
+    "install.ps1"
+  ],
+  "scripts": {
+    "check": "npm run validate && npm test",
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test",
+    "pack:check": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "agent-skills",
+    "codex",
+    "devin",
+    "mcp",
+    "trellis",
+    "codegraph",
+    "headroom",
+    "ai-engineering"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zim9729/portable-agent-stack.git"
+  },
+  "homepage": "https://github.com/Zim9729/portable-agent-stack#readme",
+  "bugs": {
+    "url": "https://github.com/Zim9729/portable-agent-stack/issues"
+  }
+}

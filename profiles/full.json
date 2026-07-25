@@ -1,0 +1,7 @@
+{
+  "name": "full",
+  "description": "Full evidence pipeline with optional gstack delegation.",
+  "skills": ["browser-acceptance", "security-audit", "release-doc-sync"],
+  "machineSummary": "always",
+  "gstackDelegation": "auto"
+}

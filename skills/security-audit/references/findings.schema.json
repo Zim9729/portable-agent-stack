@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Security audit findings",
+  "type": "object",
+  "required": ["mode", "findings", "releaseRecommendation"],
+  "properties": {
+    "mode": {"enum": ["diff", "feature", "deep", "ai-mcp"]},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "severity", "status", "confidence", "evidence"],
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "severity": {"enum": ["critical", "high", "medium", "low", "info"]},
+          "status": {"enum": ["CONFIRMED", "LIKELY", "TENTATIVE", "DISMISSED"]},
+          "confidence": {"enum": ["high", "medium", "low"]},
+          "evidence": {"type": "string"},
+          "affectedPaths": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "releaseRecommendation": {"enum": ["GO", "NO-GO", "GO-WITH-RISK"]}
+  },
+  "additionalProperties": true
+}

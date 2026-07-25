@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Browser acceptance summary",
+  "type": "object",
+  "required": ["status", "mode", "commit", "flows", "releaseRecommendation"],
+  "properties": {
+    "status": {"enum": ["PASS", "FAIL", "BLOCKED", "FLAKY", "PARTIAL"]},
+    "mode": {"enum": ["smoke", "acceptance", "exploratory", "regression"]},
+    "commit": {"type": "string"},
+    "environment": {"type": "string"},
+    "backend": {"type": "string"},
+    "flows": {
+      "type": "object",
+      "required": ["passed", "failed", "blocked", "flaky"],
+      "properties": {
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "blocked": {"type": "integer", "minimum": 0},
+        "flaky": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "releaseRecommendation": {"enum": ["GO", "NO-GO", "GO-WITH-RISK"]}
+  },
+  "additionalProperties": true
+}

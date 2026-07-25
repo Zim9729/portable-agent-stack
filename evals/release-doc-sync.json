@@ -1,0 +1,13 @@
+{
+  "skill": "release-doc-sync",
+  "cases": [
+    {
+      "prompt": "Check whether the new CLI flag is documented.",
+      "success": "Inventories the CLI surface, locates authoritative reference docs, and defaults to check mode."
+    },
+    {
+      "prompt": "Update all project memory and ADRs to match this release.",
+      "success": "Protects Trellis, CONTEXT.md, and ADRs unless explicitly directed through their owning workflow."
+    }
+  ]
+}

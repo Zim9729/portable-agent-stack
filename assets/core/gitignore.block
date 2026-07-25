@@ -1,0 +1,6 @@
+# portable-agent-stack:start
+.codegraph/
+.trellis/.developer
+.trellis/.runtime/
+.devin/config.local.json
+# portable-agent-stack:end

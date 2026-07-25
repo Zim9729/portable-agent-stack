@@ -1,0 +1,7 @@
+{
+  "name": "web",
+  "description": "Web products: browser acceptance, security review, and release documentation sync.",
+  "skills": ["browser-acceptance", "security-audit", "release-doc-sync"],
+  "machineSummary": "auto",
+  "gstackDelegation": "never"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "standard",
+  "description": "Generic software projects: security review and release documentation sync.",
+  "skills": ["security-audit", "release-doc-sync"],
+  "machineSummary": "auto",
+  "gstackDelegation": "never"
+}

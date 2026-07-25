@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a portable improvement without creating overlapping ownership.
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user or cross-agent problem needs solving?
+    validations:
+      required: true
+  - type: textarea
+    id: ownership
+    attributes:
+      label: Responsibility owner
+      description: Which existing layer should own this, and why does it not create a second task/memory system?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: portability
+    attributes:
+      label: Portability and compatibility
+      description: Codex, Devin, Agent Skills standard, operating systems, and fallback behavior.
+    validations:
+      required: true

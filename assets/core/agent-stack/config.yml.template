@@ -1,0 +1,40 @@
+version: 1
+profile: {{PROFILE}}
+
+evidence:
+  destination: trellis-active-task
+  fallback: docs/agent-evidence
+  keep_raw_failure_artifacts: true
+  machine_readable_summary: {{MACHINE_SUMMARY}}
+
+gstack:
+  # never: use only the portable procedure.
+  # auto: allow a compatible host to delegate to the matching gstack skill.
+  delegation: {{GSTACK_DELEGATION}}
+  import_task_state: false
+  import_memory: false
+
+browser_acceptance:
+  default_mode: acceptance
+  max_failure_retries: 1
+  allow_product_code_changes: false
+
+security_audit:
+  default_mode: diff
+  allow_intrusive_validation: false
+  install_scanners_without_approval: false
+  release_blocking_severities:
+    - critical
+    - high
+
+release_doc_sync:
+  default_mode: check
+  protected_paths:
+    - .trellis/
+    - CONTEXT.md
+    - docs/adr/
+
+headroom:
+  compress_long_success_output: true
+  preserve_failure_evidence: true
+  authoritative_project_memory: false
