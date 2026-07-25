@@ -45,21 +45,47 @@ Any MCP-capable agent can use Headroom's MCP server when configured by that agen
 npx skills@latest add mattpocock/skills
 ```
 
-Recommended engineering-method subset:
+Recommended engineering-method subset (11 skills):
 
 ```text
-domain-modeling
-research
+setup-matt-pocock-skills
+grill-with-docs
 prototype
-tdd
 diagnosing-bugs
+research
+tdd
+domain-modeling
 codebase-design
 improve-codebase-architecture
 code-review
 resolving-merge-conflicts
 ```
 
-Trellis remains the task owner. Avoid making `triage`, `to-spec`, `to-tickets`, `implement`, `wayfinder`, or `handoff` the default lifecycle unless you deliberately replace Trellis.
+Non-interactive installation with `pas`:
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills default
+```
+
+Or with a custom subset:
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills tdd,code-review,research
+```
+
+After installation, run `/setup-matt-pocock-skills` in your agent. Recommended answers:
+
+- **Issue tracker:** Local Markdown, but do not create a separate task lifecycle; Trellis is the sole owner.
+- **Domain documents:** `CONTEXT.md` and `docs/adr/`.
+- **Triage labels:** Do not configure (triage is not installed).
+
+Trellis remains the task owner. Do not install `triage`, `to-spec`, `to-tickets`, `implement`, `wayfinder`, or `handoff` unless you deliberately replace Trellis. Also avoid `ask-matt`, `grill-me`, `git-guardrails-claude-code`, `setup-pre-commit`, and anything under `personal/`, `in-progress/`, or `deprecated/`.
+
+For PAS maintainers, `writing-great-skills` can be added alongside the default set:
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills default,writing-great-skills
+```
 
 ## gstack
 

@@ -234,7 +234,147 @@ Use exactly one owner for each layer:
 | Context compression | Headroom |
 | Deep optional QA/security/docs backend | gstack |
 
-Recommended Matt skills include `domain-modeling`, `research`, `prototype`, `tdd`, `diagnosing-bugs`, `codebase-design`, `improve-codebase-architecture`, `code-review`, and `resolving-merge-conflicts`. Avoid enabling a second task lifecycle when Trellis is the system of record.
+Recommended Matt skills include `setup-matt-pocock-skills`, `grill-with-docs`, `domain-modeling`, `research`, `prototype`, `tdd`, `diagnosing-bugs`, `codebase-design`, `improve-codebase-architecture`, `code-review`, and `resolving-merge-conflicts`. Avoid enabling a second task lifecycle when Trellis is the system of record.
+
+## Recommended Matt Pocock skills
+
+The full Matt Pocock skill set covers everything from requirement clarification to task lifecycle management. When Trellis already owns tasks, specs, and project memory, only the **engineering-method** skills should be installed to avoid a parallel task lifecycle.
+
+### Install by default (all projects)
+
+```text
+setup-matt-pocock-skills
+grill-with-docs
+prototype
+diagnosing-bugs
+research
+tdd
+domain-modeling
+codebase-design
+improve-codebase-architecture
+code-review
+resolving-merge-conflicts
+```
+
+| Skill | Purpose |
+|---|---|
+| `setup-matt-pocock-skills` | Run once per repo; configures domain docs and project conventions for other skills |
+| `grill-with-docs` | Deep-dive requirement clarification; updates `CONTEXT.md` and ADRs as needed |
+| `prototype` | Validate design, interaction, or technical assumptions with throwaway prototypes |
+| `diagnosing-bugs` | Reproduce, narrow, hypothesize, instrument, fix, and add regression tests |
+| `research` | Consult primary sources and write cited research results into the repo |
+| `tdd` | Red–green–refactor; implement features in vertical slices |
+| `domain-modeling` | Maintain ubiquitous language, concept boundaries, and ADRs |
+| `codebase-design` | Design deep modules, simple interfaces, and test seams |
+| `improve-codebase-architecture` | Scan for architectural friction and generate a visual improvement report |
+| `code-review` | Check code conventions and requirement fidelity separately |
+| `resolving-merge-conflicts` | Resolve merge/rebase conflicts based on the true intent of both sides |
+
+### Non-interactive installation
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills default
+```
+
+`--matt-skills default` installs the 11 recommended skills non-interactively using the `skills` CLI's `--skill` and `--agent` flags. You can also specify a custom subset:
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills tdd,code-review,research
+```
+
+To use the interactive picker instead, omit `--matt-skills`:
+
+```bash
+pas tools install --yes --agents codex,devin --with-matt
+```
+
+### Post-install configuration
+
+After installation, run the following in your agent:
+
+```text
+/setup-matt-pocock-skills
+```
+
+Recommended answers:
+
+```text
+Issue tracker:
+Local Markdown, but do not create a separate task lifecycle;
+Trellis is the sole owner of tasks, specs, and state.
+
+Domain documents:
+CONTEXT.md
+docs/adr/
+
+Triage labels:
+Do not configure, because triage is not installed.
+```
+
+### Do not install
+
+Because Trellis manages tasks, state, specs, and cross-agent recovery, do not install these skills by default:
+
+```text
+triage
+to-spec
+to-tickets
+implement
+wayfinder
+handoff
+```
+
+| Matt skill | Conflict with existing architecture |
+|---|---|
+| `triage` | Creates a second issue state machine |
+| `to-spec` | Duplicates Trellis PRD / task specs |
+| `to-tickets` | Duplicates Trellis task breakdown |
+| `implement` | Takes over implementation, TDD, review, and commit flow |
+| `wayfinder` | Creates a second cross-session task graph |
+| `handoff` | Duplicates Trellis workspace and task recovery |
+
+Also avoid:
+
+```text
+ask-matt
+grill-me
+git-guardrails-claude-code
+setup-pre-commit
+personal/*
+in-progress/*
+deprecated/*
+```
+
+- `ask-matt` may recommend skills you have not installed and that conflict with Trellis.
+- `grill-me` overlaps with the more code-project-friendly `grill-with-docs`.
+- `git-guardrails-claude-code` is Claude Code specific and not suitable as a Codex/Devin universal default.
+- `setup-pre-commit` should be decided by each project's own tech stack.
+- `in-progress` and `deprecated` are not suitable as stable open-source template defaults.
+
+### Maintainer-only extra skill
+
+If you maintain Portable Agent Stack itself or its custom skills, you may additionally install:
+
+```text
+writing-great-skills
+```
+
+This is useful for maintaining `browser-acceptance`, `security-audit`, and `release-doc-sync`. Business projects using PAS do not need it by default.
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills default,writing-great-skills
+```
+
+### Final responsibility map
+
+```text
+Trellis                 Tasks and project memory
+CodeGraph               Code relationship facts
+Matt 11 Skills          Engineering methods
+Headroom                Context compression
+Custom 3 Skills         Acceptance, security, release docs
+Git                     Cross-agent sharing
+```
 
 ## Daily workflow
 
@@ -248,7 +388,7 @@ Recommended Matt skills include `domain-modeling`, `research`, `prototype`, `tdd
    - release documentation sync for public-surface changes
 6. Store evidence with the task and promote only durable knowledge.
 
-See [docs/architecture.md](docs/architecture.md) and [docs/integrations.md](docs/integrations.md).
+See [docs/architecture.md](docs/architecture.md), [docs/integrations.md](docs/integrations.md), and [docs/USAGE.zh-CN.md](docs/USAGE.zh-CN.md) (Chinese).
 
 ## Updating
 

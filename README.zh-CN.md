@@ -231,7 +231,147 @@ docs/agents/STACK.md
 | 上下文压缩 | Headroom |
 | 深度 QA、安全、文档后端 | 可选 gstack |
 
-建议使用的 Matt skills：`domain-modeling`、`research`、`prototype`、`tdd`、`diagnosing-bugs`、`codebase-design`、`improve-codebase-architecture`、`code-review`、`resolving-merge-conflicts`。Trellis 已经管理任务生命周期时，不要再启用第二套默认任务流程。
+建议使用的 Matt skills：`setup-matt-pocock-skills`、`grill-with-docs`、`domain-modeling`、`research`、`prototype`、`tdd`、`diagnosing-bugs`、`codebase-design`、`improve-codebase-architecture`、`code-review`、`resolving-merge-conflicts`。Trellis 已经管理任务生命周期时，不要再启用第二套默认任务流程。
+
+## 推荐的 Matt Pocock Skills
+
+Matt Pocock 的完整 Skill 集覆盖从需求澄清到任务生命周期管理的全流程。当 Trellis 已经拥有任务、规格和项目记忆时，只应安装**工程方法**类 Skill，避免产生并行的任务生命周期。
+
+### 所有项目默认安装
+
+```text
+setup-matt-pocock-skills
+grill-with-docs
+prototype
+diagnosing-bugs
+research
+tdd
+domain-modeling
+codebase-design
+improve-codebase-architecture
+code-review
+resolving-merge-conflicts
+```
+
+| Skill | 用途 |
+|---|---|
+| `setup-matt-pocock-skills` | 每个项目运行一次，配置领域文档和项目约定 |
+| `grill-with-docs` | 深入澄清需求，同时更新 `CONTEXT.md` 和必要的 ADR |
+| `prototype` | 用一次性原型验证设计、交互或技术假设 |
+| `diagnosing-bugs` | 复现、缩小、假设、插桩、修复、回归测试 |
+| `research` | 查阅一手资料，并把有引用的研究结果写入仓库 |
+| `tdd` | 红—绿—重构，按垂直切片实现功能 |
+| `domain-modeling` | 维护领域语言、概念边界和 ADR |
+| `codebase-design` | 设计深模块、简洁接口和测试 seam |
+| `improve-codebase-architecture` | 扫描架构摩擦并生成可视化改进报告 |
+| `code-review` | 分别检查代码规范和是否忠实实现需求 |
+| `resolving-merge-conflicts` | 根据两边真实意图解决 merge/rebase 冲突 |
+
+### 非交互式安装
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills default
+```
+
+`--matt-skills default` 使用 `skills` CLI 的 `--skill` 和 `--agent` 参数非交互式安装推荐的 11 个 Skill。也可以指定自定义子集：
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills tdd,code-review,research
+```
+
+如需使用交互式选择器，省略 `--matt-skills`：
+
+```bash
+pas tools install --yes --agents codex,devin --with-matt
+```
+
+### 安装后首次配置
+
+安装完成后，在 Agent 中运行：
+
+```text
+/setup-matt-pocock-skills
+```
+
+建议这样回答：
+
+```text
+Issue tracker:
+Local Markdown，但不要创建独立任务生命周期；
+Trellis 是任务、规格和状态的唯一所有者。
+
+Domain documents:
+CONTEXT.md
+docs/adr/
+
+Triage labels:
+不配置，因为没有安装 triage。
+```
+
+### 不要安装
+
+因为 Trellis 管理任务、状态、规格和跨 Agent 恢复，不要默认安装以下 Skill：
+
+```text
+triage
+to-spec
+to-tickets
+implement
+wayfinder
+handoff
+```
+
+| Matt Skill | 与现有架构的冲突 |
+|---|---|
+| `triage` | 建立另一套 Issue 状态机 |
+| `to-spec` | 与 Trellis PRD/任务规格重复 |
+| `to-tickets` | 与 Trellis 任务拆分重复 |
+| `implement` | 会接管实现、TDD、Review 和提交流程 |
+| `wayfinder` | 会建立另一套跨会话任务图 |
+| `handoff` | 与 Trellis workspace 和任务恢复重复 |
+
+也不要安装：
+
+```text
+ask-matt
+grill-me
+git-guardrails-claude-code
+setup-pre-commit
+personal/*
+in-progress/*
+deprecated/*
+```
+
+- `ask-matt` 可能推荐你没有安装、且与 Trellis 冲突的完整流程。
+- `grill-me` 与更适合代码项目的 `grill-with-docs` 重复。
+- `git-guardrails-claude-code` 仅针对 Claude Code，不适合作为 Codex/Devin 通用方案。
+- `setup-pre-commit` 应由每个项目自己的技术栈决定。
+- `in-progress` 和 `deprecated` 不适合作为稳定开源模板的默认依赖。
+
+### 仅维护者额外安装
+
+如果你维护 Portable Agent Stack 本身或其自定义 Skill，可以额外安装：
+
+```text
+writing-great-skills
+```
+
+它适合维护 `browser-acceptance`、`security-audit` 和 `release-doc-sync`。使用 PAS 的业务项目不必默认安装。
+
+```bash
+pas tools install --yes --agents codex,devin --matt-skills default,writing-great-skills
+```
+
+### 最终职责划分
+
+```text
+Trellis                 任务与项目记忆
+CodeGraph               代码关系事实
+Matt 11 Skills          工程方法
+Headroom                上下文压缩
+自定义 3 Skills          验收、安全、发布文档
+Git                     跨 Agent 共享
+```
 
 ## 日常流程
 
@@ -245,7 +385,7 @@ docs/agents/STACK.md
    - 公共 API、CLI、配置或发布变更：文档同步
 6. 将证据存入任务，并只把稳定知识提升为长期记忆。
 
-详见 [docs/architecture.md](docs/architecture.md) 和 [docs/integrations.md](docs/integrations.md)。
+详见 [docs/architecture.md](docs/architecture.md)、[docs/integrations.md](docs/integrations.md) 和 [docs/USAGE.zh-CN.md](docs/USAGE.zh-CN.md)。
 
 ## 更新
 

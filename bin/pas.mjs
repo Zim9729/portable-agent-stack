@@ -37,6 +37,7 @@ Tools install options:
   --agents <list>
   --user <name>
   --with-matt                     Launch the interactive Matt Pocock skill installer
+  --matt-skills <list>            Non-interactive Matt skills: "default" or comma-separated names
   --skip <list>                   trellis,codegraph,headroom,matt
   --yes                           Required acknowledgment for global installations
   --dry-run

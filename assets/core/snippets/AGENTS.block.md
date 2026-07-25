@@ -4,6 +4,7 @@
 - Trellis owns task lifecycle, project specs, and repository-backed working memory.
 - CodeGraph owns structural code discovery: symbols, call paths, dependencies, and change impact.
 - Engineering skills provide methods; they do not create a second task system.
+- Matt Pocock skills provide engineering methods only: domain modeling, research, prototyping, TDD, diagnosis, codebase design, architecture improvement, code review, and merge-conflict resolution. They must not create a parallel task lifecycle or issue workflow.
 - Headroom may compress context and retain personal preferences, but it is not authoritative project memory.
 - Compiler, type checker, linter, deterministic scanners, and tests decide correctness.
 

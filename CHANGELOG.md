@@ -4,6 +4,17 @@ All notable changes follow Keep a Changelog conventions. This project uses seman
 
 ## [Unreleased]
 
+### Added
+
+- `--matt-skills` CLI option for non-interactive Matt Pocock skill installation: `--matt-skills default` installs the 11 recommended engineering-method skills; custom subsets and `writing-great-skills` are also supported.
+- Comprehensive Matt Pocock skills recommendation section in README.md and README.zh-CN.md: default 11 skills, exclusion list with conflict rationale, maintainer-only `writing-great-skills`, post-install `/setup-matt-pocock-skills` configuration guide, and final responsibility map.
+- Matt Skills ownership rule added to the AGENTS.md managed block.
+
+### Changed
+
+- Updated `docs/integrations.md` Matt Pocock section with the full 11-skill recommendation, non-interactive `pas` commands, and post-install configuration guidance.
+- `installTools` now prints recommended skill names when launching the interactive Matt installer.
+
 ## [1.1.0] - 2026-07-25
 
 ### Fixed
