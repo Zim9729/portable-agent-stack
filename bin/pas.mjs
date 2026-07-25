@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { doctor, initStack, installTools, listProfiles, updateStack, version } from '../lib/stack.mjs';
+import { doctor, initStack, installTools, listProfiles, registerMcp, updateStack, version } from '../lib/stack.mjs';
 
 function help() {
   console.log(`Portable Agent Stack ${version}
@@ -9,6 +9,7 @@ Usage:
   pas update [options]
   pas doctor [options]
   pas tools install [options]
+  pas mcp register [options]
   pas profiles
   pas version
 
@@ -40,6 +41,12 @@ Tools install options:
   --matt-skills <list>            Non-interactive Matt skills: "default" or comma-separated names
   --skip <list>                   trellis,codegraph,headroom,matt
   --yes                           Required acknowledgment for global installations
+  --mcp-register                  Register Headroom MCP for specified agents without installing tools
+  --dry-run
+`);
+
+  console.log(`MCP register options:
+  --agents <list>                 Comma-separated Agent names (default: codex,devin)
   --dry-run
 `);
 }
@@ -50,7 +57,7 @@ function parse(tokens) {
     const token = tokens[i];
     if (!token.startsWith('--')) throw new Error(`Unexpected argument: ${token}`);
     const key = token.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-    if (['force', 'dryRun', 'prune', 'strict', 'yes', 'withMatt'].includes(key)) options[key] = true;
+    if (['force', 'dryRun', 'prune', 'strict', 'yes', 'withMatt', 'mcpRegister'].includes(key)) options[key] = true;
     else {
       const value = tokens[i + 1];
       if (value === undefined || value.startsWith('--')) throw new Error(`Missing value for ${token}`);
@@ -93,6 +100,9 @@ async function main() {
   }
   if (command === 'tools' && args[1] === 'install') {
     return installTools(parse(args.slice(2)));
+  }
+  if (command === 'mcp' && args[1] === 'register') {
+    return registerMcp(parse(args.slice(2)));
   }
 
   throw new Error(`Unknown command: ${args.join(' ')}`);

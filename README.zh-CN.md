@@ -116,7 +116,7 @@ pas tools install --yes --agents codex,devin --with-matt
 |---|---|---|---|
 | [Trellis](https://github.com/mindfold-ai/Trellis) | 任务流程、规范与项目记忆 | `npm install -g @mindfoldhq/trellis@latest` + `trellis init` | npm |
 | [CodeGraph](https://github.com/colbymchenry/codegraph) | 代码关系、调用链与影响分析 | `npm install -g @colbymchenry/codegraph` + `codegraph install` + `codegraph init` | npm |
-| [Headroom](https://github.com/headroomlabs-ai/headroom) | 上下文与工具输出压缩 | `uv tool install --python 3.13 "headroom-ai[all]"` | [uv](https://docs.astral.sh/uv/)（Python） |
+| [Headroom](https://github.com/headroomlabs-ai/headroom) | 上下文与工具输出压缩 | `uv tool install --python 3.13 "headroom-ai[all]"` + 自动注册 MCP | [uv](https://docs.astral.sh/uv/)（Python） |
 | [Matt Pocock skills](https://github.com/mattpocock/skills) | 工程方法与可复用技能 | `npx skills@latest add mattpocock/skills` | npx（随 npm 自带） |
 
 #### 前置条件
@@ -188,6 +188,7 @@ pas init          安装项目内文件
 pas update        安全更新受管文件
 pas doctor        检查项目配置
 pas tools install 显式安装和配置可选上游工具
+pas mcp register  为指定 Agent 注册 Headroom MCP
 pas profiles      列出 profile
 pas version       显示版本
 ```

@@ -116,7 +116,7 @@ pas tools install --yes --agents codex,devin --with-matt
 |---|---|---|---|
 | [Trellis](https://github.com/mindfold-ai/Trellis) | Task workflow, specs, project memory | `npm install -g @mindfoldhq/trellis@latest` + `trellis init` | npm |
 | [CodeGraph](https://github.com/colbymchenry/codegraph) | Code graph, call paths, impact analysis | `npm install -g @colbymchenry/codegraph` + `codegraph install` + `codegraph init` | npm |
-| [Headroom](https://github.com/headroomlabs-ai/headroom) | Context and tool-output compression | `uv tool install --python 3.13 "headroom-ai[all]"` | [uv](https://docs.astral.sh/uv/) (Python) |
+| [Headroom](https://github.com/headroomlabs-ai/headroom) | Context and tool-output compression | `uv tool install --python 3.13 "headroom-ai[all]"` + auto MCP registration | [uv](https://docs.astral.sh/uv/) (Python) |
 | [Matt Pocock skills](https://github.com/mattpocock/skills) | Engineering methods and reusable skills | `npx skills@latest add mattpocock/skills` | npx (bundled with npm) |
 
 #### Prerequisites
@@ -189,6 +189,8 @@ pas update     update managed assets without overwriting local edits
 pas doctor     validate the repository setup
 pas tools install
                explicitly install/configure optional upstream tools
+pas mcp register
+               register Headroom MCP for specified agents
 pas profiles   list profiles
 pas version    print the version
 ```

@@ -31,13 +31,33 @@ A typical local installation is:
 uv tool install --python 3.13 "headroom-ai[all]"
 ```
 
-Codex can be launched through Headroom's supported wrapper:
+`pas tools install` automatically registers Headroom as an MCP server for each specified agent that supports local MCP configuration:
+
+| Agent | Config file | Format |
+|---|---|---|
+| Codex | `~/.codex/config.toml` | TOML `[mcp_servers.headroom]` |
+| Claude Code | `~/.claude.json` | JSON `mcpServers.headroom` |
+| Cursor | `~/.cursor/mcp.json` | JSON `mcpServers.headroom` |
+| Gemini | `~/.gemini/settings.json` | JSON `mcpServers.headroom` |
+| OpenCode | `~/.opencode/config.json` | JSON `mcpServers.headroom` |
+| Kiro | `~/.kiro/config.json` | JSON `mcpServers.headroom` |
+| Devin | Cloud dashboard | Manual configuration required |
+
+To register Headroom MCP without installing tools (e.g. after installing Headroom separately):
 
 ```bash
-headroom wrap codex
+pas mcp register --agents codex,devin
 ```
 
-Any MCP-capable agent can use Headroom's MCP server when configured by that agent. Project-critical knowledge must still be written to Git-tracked files.
+The registered MCP server runs `headroom mcp serve` and exposes compression tools (`headroom_compress`, `headroom_retrieve`, `headroom_stats`) to the agent. The agent can call these tools on demand to compress long outputs and retrieve them later.
+
+Codex can also be launched through Headroom's wrapper for automatic I/O compression:
+
+```bash
+headroom wrap codex --code-memory none
+```
+
+Use `--code-memory none` because code understanding is already handled by CodeGraph. Any MCP-capable agent can use Headroom's MCP server when configured by that agent. Project-critical knowledge must still be written to Git-tracked files.
 
 ## Matt Pocock skills
 
