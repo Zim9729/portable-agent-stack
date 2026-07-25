@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run check
       - run: mkdir -p dist && npm pack --pack-destination dist
@@ -24,3 +25,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" dist/*.tgz --generate-notes --verify-tag
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

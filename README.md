@@ -39,29 +39,136 @@ They work without gstack and can optionally delegate to matching gstack skills w
 
 The optional upstream stack may also require npm, Python, `uv`, and Agent-specific CLIs.
 
-## Quick start
+## Installation
 
-Clone this repository once, then initialize any Git project:
+### Option A — Clone from GitHub (no global install)
 
 ```bash
 git clone https://github.com/Zim9729/portable-agent-stack.git ~/.local/share/portable-agent-stack
+```
+
+Then run `pas` via node:
+
+```bash
 cd /path/to/your-project
 node ~/.local/share/portable-agent-stack/bin/pas.mjs init --profile standard --agents codex,devin
 ```
 
-After publishing the package or installing it globally, use:
+Or use the platform-specific helper script:
+
+```bash
+# Linux / macOS
+~/.local/share/portable-agent-stack/install.sh --profile standard --agents codex,devin
+
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File "$HOME/.local/share/portable-agent-stack/install.ps1" --profile standard --agents codex,devin
+```
+
+### Option B — Install from npm
+
+```bash
+npm install -g portable-agent-stack
+```
+
+After global install, the `pas` command is available everywhere:
+
+```bash
+cd /path/to/your-project
+pas init --profile standard --agents codex,devin
+```
+
+You can also use `npx` without a global install:
+
+```bash
+cd /path/to/your-project
+npx portable-agent-stack init --profile standard --agents codex,devin
+```
+
+### Step 1 — Initialize project files
+
+`init` only writes repo-local files (`.agent-stack/`, `.agents/skills/`, `AGENTS.md`, etc.). It does **not** install any global software.
 
 ```bash
 pas init --profile standard --agents codex,devin
 ```
 
-`init` does **not** install global software. To explicitly install and initialize the optional upstream tools:
+| Option | Description | Default |
+|---|---|---|
+| `--profile <name>` | `minimal` / `standard` / `web` / `full` | `standard` |
+| `--agents <list>` | Comma-separated agent names | `codex,devin` |
+| `--target <path>` | Target Git repository | current directory |
+| `--force` | Overwrite conflicting managed files | off |
+| `--dry-run` | Print changes without writing | off |
+
+### Step 2 — Install upstream dependencies (optional)
+
+To install and configure the optional upstream tools, run:
 
 ```bash
 pas tools install --yes --agents codex,devin --with-matt
 ```
 
-Review [THIRD_PARTY.md](THIRD_PARTY.md) first, especially Trellis's AGPL-3.0 license.
+`--yes` is required to acknowledge that global installations will be performed. Review [THIRD_PARTY.md](THIRD_PARTY.md) first, especially Trellis's AGPL-3.0 license.
+
+#### Installed tools
+
+| Tool | Role | Install method | Requires |
+|---|---|---|---|
+| [Trellis](https://github.com/mindfold-ai/Trellis) | Task workflow, specs, project memory | `npm install -g @mindfoldhq/trellis@latest` + `trellis init` | npm |
+| [CodeGraph](https://github.com/colbymchenry/codegraph) | Code graph, call paths, impact analysis | `npm install -g @colbymchenry/codegraph` + `codegraph install` + `codegraph init` | npm |
+| [Headroom](https://github.com/headroomlabs-ai/headroom) | Context and tool-output compression | `uv tool install --python 3.13 "headroom-ai[all]"` | [uv](https://docs.astral.sh/uv/) (Python) |
+| [Matt Pocock skills](https://github.com/mattpocock/skills) | Engineering methods and reusable skills | `npx skills@latest add mattpocock/skills` | npx (bundled with npm) |
+
+#### Prerequisites
+
+- **Git** and **Node.js 18+** are required for `pas` itself.
+- **npm** is required for Trellis and CodeGraph (bundled with Node.js).
+- **[uv](https://docs.astral.sh/uv/)** is required for Headroom. Install it separately:
+  ```bash
+  # Linux / macOS
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  # Windows PowerShell
+  powershell -ExecutionPolicy Bypass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+  If `uv` is not installed, Headroom is skipped with a warning — other tools still install.
+- **npx** is required for Matt Pocock skills (bundled with npm). Add `--with-matt` to enable.
+
+#### Options
+
+| Option | Description |
+|---|---|
+| `--yes` | Required acknowledgment for global installations |
+| `--agents <list>` | Comma-separated agent names (default: `codex,devin`) |
+| `--with-matt` | Also install Matt Pocock skills |
+| `--skip <list>` | Skip specific tools: `trellis,codegraph,headroom,matt` |
+| `--user <name>` | Git user name for Trellis init (default: `git config user.name`) |
+| `--dry-run` | Print commands without executing |
+
+#### Examples
+
+```bash
+# Install everything
+pas tools install --yes --agents codex,devin --with-matt
+
+# Skip Headroom and Matt skills
+pas tools install --yes --agents codex,devin --skip headroom,matt
+
+# Preview what would be installed
+pas tools install --yes --agents codex,devin --with-matt --dry-run
+```
+
+#### Verify installation
+
+```bash
+pas doctor
+```
+
+Use `--strict` to treat missing optional tools as failures:
+
+```bash
+pas doctor --strict
+```
 
 ## Profiles
 

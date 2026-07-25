@@ -4,6 +4,16 @@ All notable changes follow Keep a Changelog conventions. This project uses seman
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-07-25
+
+### Fixed
+
+- Windows compatibility: `spawnSync` now uses shell mode on win32 so `npm`, `uv`, and other `.cmd`-based commands are found correctly.
+
+### Changed
+
+- Rewrote Quick start as a comprehensive Installation section in both README.md and README.zh-CN.md, covering GitHub clone, npm global install, npx, full upstream dependency table, prerequisites, and all CLI options.
+
 ## [1.0.0] - 2026-07-25
 
 ### Added

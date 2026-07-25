@@ -39,29 +39,136 @@ Git 仓库
 
 可选上游工具还可能需要 npm、Python、`uv` 以及对应 Agent CLI。
 
-## 快速开始
+## 安装
 
-先把本仓库克隆到本机，然后初始化任意 Git 项目：
+### 方式 A — 从 GitHub 克隆（无需全局安装）
 
 ```bash
 git clone https://github.com/Zim9729/portable-agent-stack.git ~/.local/share/portable-agent-stack
+```
+
+然后通过 node 运行：
+
+```bash
 cd /path/to/your-project
 node ~/.local/share/portable-agent-stack/bin/pas.mjs init --profile standard --agents codex,devin
 ```
 
-发布 npm 包或全局安装后可以直接使用：
+或使用平台对应的安装脚本：
+
+```bash
+# Linux / macOS
+~/.local/share/portable-agent-stack/install.sh --profile standard --agents codex,devin
+
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File "$HOME/.local/share/portable-agent-stack/install.ps1" --profile standard --agents codex,devin
+```
+
+### 方式 B — 从 npm 安装
+
+```bash
+npm install -g portable-agent-stack
+```
+
+全局安装后，`pas` 命令可在任意目录使用：
+
+```bash
+cd /path/to/your-project
+pas init --profile standard --agents codex,devin
+```
+
+也可以用 `npx` 免全局安装直接运行：
+
+```bash
+cd /path/to/your-project
+npx portable-agent-stack init --profile standard --agents codex,devin
+```
+
+### 第一步 — 初始化项目文件
+
+`init` 只写项目内文件（`.agent-stack/`、`.agents/skills/`、`AGENTS.md` 等），**不会**安装任何全局软件。
 
 ```bash
 pas init --profile standard --agents codex,devin
 ```
 
-`init` **不会**安装全局软件。需要安装并初始化可选上游工具时，明确执行：
+| 选项 | 说明 | 默认值 |
+|---|---|---|
+| `--profile <name>` | `minimal` / `standard` / `web` / `full` | `standard` |
+| `--agents <list>` | 逗号分隔的 Agent 名称 | `codex,devin` |
+| `--target <path>` | 目标 Git 仓库路径 | 当前目录 |
+| `--force` | 覆盖冲突的受管文件 | 关闭 |
+| `--dry-run` | 只打印变更，不实际写入 | 关闭 |
+
+### 第二步 — 安装上游依赖（可选）
+
+安装并配置可选上游工具：
 
 ```bash
 pas tools install --yes --agents codex,devin --with-matt
 ```
 
-执行前请阅读 [THIRD_PARTY.md](THIRD_PARTY.md)，尤其是 Trellis 的 AGPL-3.0 许可证。
+`--yes` 是必须的，表示你确认要执行全局安装。执行前请阅读 [THIRD_PARTY.md](THIRD_PARTY.md)，尤其是 Trellis 的 AGPL-3.0 许可证。
+
+#### 安装的工具
+
+| 工具 | 职责 | 安装方式 | 前置条件 |
+|---|---|---|---|
+| [Trellis](https://github.com/mindfold-ai/Trellis) | 任务流程、规范与项目记忆 | `npm install -g @mindfoldhq/trellis@latest` + `trellis init` | npm |
+| [CodeGraph](https://github.com/colbymchenry/codegraph) | 代码关系、调用链与影响分析 | `npm install -g @colbymchenry/codegraph` + `codegraph install` + `codegraph init` | npm |
+| [Headroom](https://github.com/headroomlabs-ai/headroom) | 上下文与工具输出压缩 | `uv tool install --python 3.13 "headroom-ai[all]"` | [uv](https://docs.astral.sh/uv/)（Python） |
+| [Matt Pocock skills](https://github.com/mattpocock/skills) | 工程方法与可复用技能 | `npx skills@latest add mattpocock/skills` | npx（随 npm 自带） |
+
+#### 前置条件
+
+- **Git** 和 **Node.js 18+** 是 `pas` 本身的必需条件。
+- **npm** 用于安装 Trellis 和 CodeGraph（随 Node.js 自带）。
+- **[uv](https://docs.astral.sh/uv/)** 用于安装 Headroom，需单独安装：
+  ```bash
+  # Linux / macOS
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  # Windows PowerShell
+  powershell -ExecutionPolicy Bypass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+  如果未安装 `uv`，Headroom 会被跳过并给出警告，其他工具仍正常安装。
+- **npx** 用于安装 Matt Pocock skills（随 npm 自带）。需添加 `--with-matt` 参数启用。
+
+#### 选项
+
+| 选项 | 说明 |
+|---|---|
+| `--yes` | 必须的确认参数，表示同意执行全局安装 |
+| `--agents <list>` | 逗号分隔的 Agent 名称（默认：`codex,devin`） |
+| `--with-matt` | 额外安装 Matt Pocock skills |
+| `--skip <list>` | 跳过指定工具：`trellis,codegraph,headroom,matt` |
+| `--user <name>` | Trellis init 使用的 Git 用户名（默认：`git config user.name`） |
+| `--dry-run` | 只打印命令，不实际执行 |
+
+#### 示例
+
+```bash
+# 安装全部依赖
+pas tools install --yes --agents codex,devin --with-matt
+
+# 跳过 Headroom 和 Matt skills
+pas tools install --yes --agents codex,devin --skip headroom,matt
+
+# 预览将执行的安装操作
+pas tools install --yes --agents codex,devin --with-matt --dry-run
+```
+
+#### 验证安装
+
+```bash
+pas doctor
+```
+
+加 `--strict` 可将缺失的可选工具也标记为失败：
+
+```bash
+pas doctor --strict
+```
 
 ## Profile
 
