@@ -4,6 +4,8 @@ All notable changes follow Keep a Changelog conventions. This project uses seman
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-26
+
 ### Added
 
 - `pas mcp register` command to register Headroom as an MCP server for specified agents without installing tools.
