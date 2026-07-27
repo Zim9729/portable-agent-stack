@@ -86,7 +86,7 @@ for (const entry of readdirSync(join(root, 'profiles'))) {
   ok(`profiles/${entry}`);
 }
 
-if (pkg.version !== '1.2.0') fail(`unexpected package version ${pkg.version}`);
+if (pkg.version !== '1.3.0') fail(`unexpected package version ${pkg.version}`);
 
 if (failures > 0) process.exit(1);
 console.log('\nValidation passed.');
