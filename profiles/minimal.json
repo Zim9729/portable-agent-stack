@@ -3,5 +3,8 @@
   "description": "Core repository contract and memory structure only.",
   "skills": [],
   "machineSummary": "never",
-  "gstackDelegation": "never"
+  "gstackDelegation": "never",
+  "headroomAutoCompress": false,
+  "headroomThresholdLines": 200,
+  "headroomThresholdChars": 8000
 }

@@ -38,3 +38,14 @@ headroom:
   compress_long_success_output: true
   preserve_failure_evidence: true
   authoritative_project_memory: false
+  auto_compress:
+    enabled: {{HEADROOM_AUTO_COMPRESS}}
+    threshold_lines: {{HEADROOM_THRESHOLD_LINES}}
+    threshold_chars: {{HEADROOM_THRESHOLD_CHARS}}
+    preserve:
+      - failed_test_names
+      - error_stack_traces
+      - file_paths
+      - security_evidence
+      - scanner_rule_ids
+      - reproduction_steps

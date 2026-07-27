@@ -3,5 +3,8 @@
   "description": "Full evidence pipeline with optional gstack delegation.",
   "skills": ["browser-acceptance", "security-audit", "release-doc-sync"],
   "machineSummary": "always",
-  "gstackDelegation": "auto"
+  "gstackDelegation": "auto",
+  "headroomAutoCompress": true,
+  "headroomThresholdLines": 100,
+  "headroomThresholdChars": 4000
 }

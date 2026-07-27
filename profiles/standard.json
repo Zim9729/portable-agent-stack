@@ -3,5 +3,8 @@
   "description": "Generic software projects: security review and release documentation sync.",
   "skills": ["security-audit", "release-doc-sync"],
   "machineSummary": "auto",
-  "gstackDelegation": "never"
+  "gstackDelegation": "never",
+  "headroomAutoCompress": true,
+  "headroomThresholdLines": 150,
+  "headroomThresholdChars": 6000
 }

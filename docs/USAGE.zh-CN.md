@@ -523,6 +523,56 @@ Headroom MCP 适合：
 * 恢复原始内容；
 * 查看压缩统计。
 
+### 自动压缩（MCP 自动触发）
+
+从 v1.2.0 起，项目支持通过 MCP 自动触发 Headroom 压缩。配置位于 `.agent-stack/config.yml`：
+
+```yaml
+headroom:
+  auto_compress:
+    enabled: true
+    threshold_lines: 150
+    threshold_chars: 6000
+    preserve:
+      - failed_test_names
+      - error_stack_traces
+      - file_paths
+      - security_evidence
+      - scanner_rule_ids
+      - reproduction_steps
+```
+
+工作原理：
+
+1. `AGENTS.md` 受管区块包含自动压缩指令，Agent 读取后遵循。
+2. 当工具输出超过 `threshold_lines` 行或 `threshold_chars` 字符时，Agent 自动调用 `headroom_compress`。
+3. 压缩后用返回的 hash 代替原始内容，需要细节时通过 `headroom_retrieve` 恢复。
+4. `preserve` 列表中的内容类型永远不压缩。
+
+各 Profile 默认配置：
+
+| Profile | 自动压缩 | 行阈值 | 字符阈值 |
+|---|---|---|---|
+| minimal | 关闭 | 200 | 8000 |
+| standard | 开启 | 150 | 6000 |
+| web | 开启 | 150 | 6000 |
+| full | 开启 | 100 | 4000 |
+
+初始化或更新时可通过 CLI 覆盖：
+
+```powershell
+pas init --profile standard --headroom-auto-compress true --headroom-threshold-lines 200 --headroom-threshold-chars 10000
+pas update --profile full --headroom-auto-compress false
+```
+
+检查自动压缩状态：
+
+```powershell
+pas doctor
+```
+
+`doctor` 会在自动压缩开启时验证 headroom 命令是否安装、阈值是否配置、AGENTS.md 指令是否存在。
+
 重要原则：
 
 ```text

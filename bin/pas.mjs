@@ -19,6 +19,9 @@ Init options:
   --agents <list>                 Comma-separated Agent names (default: codex,devin)
   --gstack <never|auto>           Override profile delegation policy
   --machine-summary <mode>        never | auto | always
+  --headroom-auto-compress <bool> Override profile headroom auto-compress (true|false)
+  --headroom-threshold-lines <n>  Override auto-compress line threshold
+  --headroom-threshold-chars <n>  Override auto-compress character threshold
   --force                         Overwrite conflicting managed files
   --dry-run                       Print changes without writing
 
@@ -57,13 +60,16 @@ function parse(tokens) {
     const token = tokens[i];
     if (!token.startsWith('--')) throw new Error(`Unexpected argument: ${token}`);
     const key = token.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-    if (['force', 'dryRun', 'prune', 'strict', 'yes', 'withMatt', 'mcpRegister'].includes(key)) options[key] = true;
-    else {
-      const value = tokens[i + 1];
-      if (value === undefined || value.startsWith('--')) throw new Error(`Missing value for ${token}`);
-      options[key] = value;
-      i += 1;
+    if (['force', 'dryRun', 'prune', 'strict', 'yes', 'withMatt', 'mcpRegister'].includes(key)) {
+      options[key] = true;
+      continue;
     }
+    const value = tokens[i + 1];
+    if (value === undefined || value.startsWith('--')) throw new Error(`Missing value for ${token}`);
+    if (key === 'headroomAutoCompress') options[key] = value === 'true';
+    else if (key === 'headroomThresholdLines' || key === 'headroomThresholdChars') options[key] = parseInt(value, 10);
+    else options[key] = value;
+    i += 1;
   }
   if (options.gstack) options.gstackDelegation = options.gstack;
   return options;
