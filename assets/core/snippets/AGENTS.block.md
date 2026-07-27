@@ -17,6 +17,16 @@
 5. Store evidence with the active task or under `docs/agent-evidence/` when no task exists.
 6. Promote durable knowledge to project specs, `CONTEXT.md`, or `docs/adr/`; keep temporary investigation notes out of permanent guidance.
 
+### Auto-compress (Headroom MCP)
+
+When `headroom.auto_compress.enabled` is `true` in `.agent-stack/config.yml`:
+
+- After any tool output or command result exceeds `threshold_lines` lines OR `threshold_chars` characters, immediately call `headroom_compress` on that output before continuing.
+- Use the returned hash to retrieve the original content via `headroom_retrieve` if details are needed later.
+- Never compress outputs that contain: failed test names, error stack traces, file paths, security evidence, scanner rule IDs, or reproduction steps. These are listed under `headroom.auto_compress.preserve` and must remain in full.
+- Compressed content replaces the verbose output in context; the hash reference preserves recoverability.
+- Call `headroom_stats` periodically to verify compression is active and effective.
+
 Read `.agent-stack/config.yml` for profile-specific evidence and delegation policy.
 
 ### Destructive operations

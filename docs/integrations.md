@@ -59,6 +59,50 @@ headroom wrap codex --code-memory none
 
 Use `--code-memory none` because code understanding is already handled by CodeGraph. Any MCP-capable agent can use Headroom's MCP server when configured by that agent. Project-critical knowledge must still be written to Git-tracked files.
 
+### Auto-compress (MCP auto-trigger)
+
+Since v1.2.0, Portable Agent Stack supports automatic Headroom compression via MCP. The configuration lives in `.agent-stack/config.yml`:
+
+```yaml
+headroom:
+  auto_compress:
+    enabled: true
+    threshold_lines: 150
+    threshold_chars: 6000
+    preserve:
+      - failed_test_names
+      - error_stack_traces
+      - file_paths
+      - security_evidence
+      - scanner_rule_ids
+      - reproduction_steps
+```
+
+How it works:
+
+1. `AGENTS.md` managed block includes auto-compress instructions that the agent reads and follows.
+2. When any tool output exceeds `threshold_lines` or `threshold_chars`, the agent automatically calls `headroom_compress`.
+3. The returned hash replaces the verbose output in context; `headroom_retrieve` recovers the original when needed.
+4. Content types listed under `preserve` are never compressed.
+
+Profile defaults:
+
+| Profile | Auto-compress | Lines | Chars |
+|---|---|---|---|
+| minimal | off | 200 | 8000 |
+| standard | on | 150 | 6000 |
+| web | on | 150 | 6000 |
+| full | on | 100 | 4000 |
+
+CLI overrides during init or update:
+
+```bash
+pas init --profile standard --headroom-auto-compress true --headroom-threshold-lines 200 --headroom-threshold-chars 10000
+pas update --profile full --headroom-auto-compress false
+```
+
+Check auto-compress status with `pas doctor` — it verifies headroom is installed, thresholds are configured, and AGENTS.md instructions are present.
+
 ## Matt Pocock skills
 
 ```bash

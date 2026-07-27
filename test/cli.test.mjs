@@ -90,3 +90,38 @@ test('profile change with prune removes only unmodified managed skills', () => {
   assert.ok(!existsSync(join(dir, '.agents/skills/browser-acceptance/SKILL.md')));
   assert.ok(existsSync(join(dir, '.agents/skills/security-audit/SKILL.md')));
 });
+
+test('standard profile config has auto_compress enabled', () => {
+  const dir = repo();
+  run(['init', '--profile', 'standard'], dir);
+  const config = readFileSync(join(dir, '.agent-stack/config.yml'), 'utf8');
+  assert.match(config, /auto_compress:/);
+  assert.match(config, /enabled: true/);
+  assert.match(config, /threshold_lines: 150/);
+  assert.match(config, /threshold_chars: 6000/);
+});
+
+test('minimal profile config has auto_compress disabled', () => {
+  const dir = repo();
+  run(['init', '--profile', 'minimal'], dir);
+  const config = readFileSync(join(dir, '.agent-stack/config.yml'), 'utf8');
+  assert.match(config, /auto_compress:/);
+  assert.match(config, /enabled: false/);
+});
+
+test('AGENTS.md contains auto-compress instructions for standard profile', () => {
+  const dir = repo();
+  run(['init', '--profile', 'standard'], dir);
+  const agents = readFileSync(join(dir, 'AGENTS.md'), 'utf8');
+  assert.match(agents, /Auto-compress \(Headroom MCP\)/);
+  assert.match(agents, /headroom_compress/);
+});
+
+test('CLI override for headroom threshold works', () => {
+  const dir = repo();
+  run(['init', '--profile', 'standard', '--headroom-auto-compress', 'false', '--headroom-threshold-lines', '300', '--headroom-threshold-chars', '12000'], dir);
+  const config = readFileSync(join(dir, '.agent-stack/config.yml'), 'utf8');
+  assert.match(config, /enabled: false/);
+  assert.match(config, /threshold_lines: 300/);
+  assert.match(config, /threshold_chars: 12000/);
+});
